@@ -3,6 +3,7 @@
 // @name           IITC Plugin: Portal Scale
 // @category       Marker
 // @version        0.0.1
+// @downloadURL    https://raw.githubusercontent.com/res0Nanz/iitc-plugins/main/iitc-portal-scale.user.js
 // @description    Rescale Portal Markers
 // @include        http://*.ingress.com/intel*
 // @include        https://*.ingress.com/intel*
