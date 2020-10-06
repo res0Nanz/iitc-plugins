@@ -21,12 +21,21 @@ function wrapper(plugin_info) {
 
     // use own namespace for plugin
     window.plugin.portalScale = function() {};
-    //window.plugin.portalScale.KEY_STORAGE = 'plugin-portal-scale';
+    window.plugin.portalScale.KEY_STORAGE = 'plugin-portal-scale';
 
-    window.plugin.portalScale.scale = 0.5;
+    window.plugin.portalScale.saveScale = function () {
+        if (typeof this.scale != "number"
+            || this.scale > 2 || this.scale < 0.1) {
+            this.scale = 1;
+        }
+        localStorage[this.KEY_STORAGE] = this.scale;
+    }
+
+    window.plugin.portalScale.scale = Number(localStorage[window.plugin.portalScale.KEY_STORAGE]);
+    window.plugin.portalScale.saveScale();
 
     window.plugin.portalScale.updateScale = function (value) {
-        window.plugin.portalScale.scale = value;
+        this.scale = value;
         var scaleTextElement = document.getElementById('portalScaleText');
         if (typeof scaleTextElement != undefined) {
             scaleTextElement.innerHTML=value;
@@ -38,16 +47,16 @@ function wrapper(plugin_info) {
     /** OPTIONS ***********************************************************/
     /**********************************************************************/
     window.plugin.portalScale.manualOpt = function() {
-        var currentScaleValue = Math.floor(10 * window.plugin.portalScale.scale);
+        var currentScaleValue = Math.floor(10 * this.scale);
         dialog({
             html: '<div id="portalScaleSetbox"><input type="range" min="1" max="20" value="'
-            + currentScaleValue + '" oninput="window.plugin.portalScale.updateScale(this.value/10);">'
+            + currentScaleValue + '"'
+            + ' oninput="window.plugin.portalScale.updateScale(this.value/10);"'
+            + ' onchange="window.plugin.portalScale.saveScale();">'
             + '<span id="portalScaleText">' + currentScaleValue/10 + '</span>',
             dialogClass: 'ui-dialog',
             title: 'Portal Scale Options'
         });
-
-        //window.runHooks('pluginPotalScaleOpenOpt', {});
     }
     window.plugin.portalScale.htmlCallSetBox = '<a onclick="window.plugin.portalScale.manualOpt();return false;">Portal Scale</a>';
 
