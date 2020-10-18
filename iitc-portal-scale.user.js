@@ -2,7 +2,7 @@
 // @id             iitc-portal-scale
 // @name           IITC Plugin: Portal Scale
 // @category       Marker
-// @version        0.0.1
+// @version        0.0.2
 // @downloadURL    https://raw.githubusercontent.com/res0Nanz/iitc-plugins/main/iitc-portal-scale.user.js
 // @description    Rescale Portal Markers
 // @include        http://*.ingress.com/intel*
@@ -26,7 +26,7 @@ function wrapper(plugin_info) {
 
     window.plugin.portalScale.saveScale = function () {
         if (typeof this.scale != "number"
-            || this.scale > 2 || this.scale < 0.1) {
+            || !(this.scale <= 2) || !(this.scale < 0.1)) {
             this.scale = 1;
         }
         localStorage[this.KEY_STORAGE] = this.scale;
